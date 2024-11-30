@@ -1,34 +1,66 @@
-import React, { createContext, useContext, useEffect, useRef } from "react";
+import React, { createContext, useContext, useRef, useEffect } from "react";
 
-type WebRTCContextType = {
-  peerConnection: React.MutableRefObject<RTCPeerConnection>;
+interface WebRTCContextType {
   signalingChannel: React.MutableRefObject<WebSocket | null>;
-};
+  peerId: string;
+  roomId: string;
+}
 
-type WebRTCProviderProps = {
-  signalingServer: string;
-  children: React.ReactNode;
-};
+const WebRTCContext = createContext<WebRTCContextType>({
+  signalingChannel: { current: null },
+  peerId: "",
+  roomId: "",
+});
 
-const WebRTCContext = createContext<WebRTCContextType>(null!);
-
-export const WebRTCProvider = ({
-  signalingServer,
+export function WebRTCProvider({
   children,
-}: WebRTCProviderProps) => {
-  const peerConnection = useRef(new RTCPeerConnection());
+  signalingServer = "ws://localhost:8080",
+  roomId,
+  peerId,
+}: {
+  children: React.ReactNode;
+  signalingServer?: string;
+  roomId: string;
+  peerId: string;
+}) {
   const signalingChannel = useRef<WebSocket | null>(null);
 
   useEffect(() => {
+    // Establish WebSocket connection
     signalingChannel.current = new WebSocket(signalingServer);
-    return () => signalingChannel.current?.close();
+
+    signalingChannel.current.onopen = () => {
+      console.log("Signaling channel opened");
+    };
+
+    signalingChannel.current.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    signalingChannel.current.onclose = () => {
+      console.log("Signaling channel closed");
+    };
+
+    return () => {
+      if (signalingChannel.current) {
+        signalingChannel.current.close();
+      }
+    };
   }, [signalingServer]);
 
   return (
-    <WebRTCContext.Provider value={{ peerConnection, signalingChannel }}>
+    <WebRTCContext.Provider
+      value={{
+        signalingChannel,
+        peerId,
+        roomId,
+      }}
+    >
       {children}
     </WebRTCContext.Provider>
   );
-};
+}
 
-export const useWebRTCContext = () => useContext(WebRTCContext);
+export function useWebRTCContext() {
+  return useContext(WebRTCContext);
+}

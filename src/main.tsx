@@ -6,8 +6,6 @@ import { WebRTCProvider } from "./contexts/WebRTCProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <WebRTCProvider signalingServer="">
-      <App />
-    </WebRTCProvider>
+    <App />
   </StrictMode>,
 );

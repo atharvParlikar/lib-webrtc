@@ -1,15 +1,16 @@
-import { useWebRTC } from "./hooks/useWebRTC";
+import React from "react";
+import { WebRTCProvider } from "./contexts/WebRTCProvider";
+import { VideoChat } from "./VideoChat";
 
 function App() {
-  const { candidates } = useWebRTC();
-
   return (
-    <div>
-      <h2>ICE Candidates:</h2>
-      {candidates.map((candidate, index) => (
-        <div key={index}>{JSON.stringify(candidate)}</div>
-      ))}
-    </div>
+    <WebRTCProvider
+      roomId="my-awesome-room"
+      peerId="Atharv"
+      signalingServer="ws://localhost:8080"
+    >
+      <VideoChat />
+    </WebRTCProvider>
   );
 }
 
