@@ -1,4 +1,3 @@
-````markdown
 # Icebreaker
 
 A simple and intuitive WebRTC library for building video call applications in React. Icebreaker abstracts the complexities of WebRTC and provides an easy-to-use API for integrating real-time video and audio communication into your React applications.
@@ -19,7 +18,6 @@ You can install Icebreaker via npm or yarn.
 ```bash
 npm install icebreaker
 ```
-````
 
 ### With yarn:
 
