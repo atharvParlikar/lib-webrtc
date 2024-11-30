@@ -172,8 +172,3 @@ We welcome contributions! If you find a bug or have an idea for a new feature, f
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-```
-
-This Markdown should render properly on GitHub or any other Markdown renderer.
-```
