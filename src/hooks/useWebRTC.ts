@@ -15,7 +15,7 @@ export function useWebRTC(roomId: string, peerId: string) {
     new Map(),
   );
   const [isConnected, setIsConnected] = useState(false);
-  const peerConnectionsRef = useRef<Map<string, RTCPeerConnection>>(new Map());
+  const peerConnectionsRef = useRef<Map<string, RTCPeerConnection>>(new Map()); // Madarchod typescript
 
   // Join the room when the hook is first used
   useEffect(() => {
